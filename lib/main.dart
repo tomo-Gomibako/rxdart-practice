@@ -1,13 +1,14 @@
 import 'dart:async';
+import 'package:rxdart/rxdart.dart';
 
-StreamController controller = StreamController<int>();
+PublishSubject subject = PublishSubject<int>();
 
 void main() {
   subscribe();
 
   int count = 0;
   Timer.periodic(Duration(seconds: 1), (timer) {
-    controller.sink.add(++count);
+    subject.add(++count);
   });
 }
 
@@ -27,7 +28,7 @@ StreamTransformer<int, String> transformer() {
 }
 
 void subscribe() {
-  controller.stream.transform(transformer()).listen((event) {
+  subject.transform(transformer()).listen((event) {
     print("got: ${event.toString()}");
   });
 }
